@@ -7,11 +7,11 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306, // Railway's port is 56327 but fallback helps
+    port: process.env.DB_PORT, // Railway's port is 56327 but fallback helps
     dialect: "mysql",
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
       },
     },
     logging: false,

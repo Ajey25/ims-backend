@@ -297,7 +297,7 @@ exports.updateInward = async (req, res) => {
 
       // Update the inward record
       await sequelize.query(
-        `UPDATE inwards
+        `UPDATE Inwards
          SET inwardDate = ?, totalAmount = ?, attachment = ?, createdBy = ?, updatedAt = NOW()
          WHERE id = ?`,
         {

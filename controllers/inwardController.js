@@ -321,7 +321,7 @@ exports.updateInward = async (req, res) => {
       // Insert new inward items
       for (const item of updatedItems) {
         await sequelize.query(
-          `INSERT INTO inwardItems (inwardId, itemId, itemName, uomId, qty, weight, rate, totalAmount, createdAt, updatedAt)
+          `INSERT INTO InwardItems (inwardId, itemId, itemName, uomId, qty, weight, rate, totalAmount, createdAt, updatedAt)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
           {
             replacements: [

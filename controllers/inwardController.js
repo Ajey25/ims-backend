@@ -180,7 +180,7 @@ exports.updateInward = async (req, res) => {
     }
 
     const existingItems = await sequelize.query(
-      `SELECT itemId, qty, weight FROM inwardItems WHERE inwardId = ?`,
+      `SELECT itemId, qty, weight FROM InwardItems WHERE inwardId = ?`,
       {
         replacements: [inward.id],
         type: sequelize.QueryTypes.SELECT,
@@ -313,7 +313,7 @@ exports.updateInward = async (req, res) => {
       );
 
       // Delete existing inward items
-      await sequelize.query(`DELETE FROM inwardItems WHERE inwardId = ?`, {
+      await sequelize.query(`DELETE FROM InwardItems WHERE inwardId = ?`, {
         replacements: [inward.id],
         transaction,
       });

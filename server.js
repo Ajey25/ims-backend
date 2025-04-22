@@ -21,10 +21,15 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-  origin: "http://localhost:5173", // Allow frontend
+  origin: [
+    "http://localhost:5173",
+    "https://ims-frontend-34sa75qhv-ajay-prajapatis-projects-99e0518f.vercel.app",
+  ],
   methods: "GET, POST, PUT, DELETE",
   allowedHeaders: "Content-Type, Authorization",
+  credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 // Middleware

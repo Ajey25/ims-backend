@@ -24,6 +24,7 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "https://ims-frontend-git-master-ajay-prajapatis-projects-99e0518f.vercel.app",
+    "ims-frontend-wheat.vercel.app",
   ],
   methods: "GET, POST, PUT, DELETE",
   allowedHeaders: "Content-Type, Authorization",

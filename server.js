@@ -42,13 +42,27 @@ app.use("/api/onrent", onrentRoute);
 app.use("/api/onrentreturn", onrentReturnRoute);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/report", reportRoutes);
-// Server Start
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, async () => {
+
+// Function to start the server after DB connection
+const startServer = async () => {
   try {
+    // Check the database connection
+    await sequelize.authenticate();
+    console.log("✅ Database connected successfully!");
+
+    // Sync the models (optional, only needed if you want to auto-sync tables)
     await sequelize.sync({ force: false });
-    console.log(`✅ Server is running on port ${PORT}`);
+
+    // Start the server once DB is connected
+    const PORT = process.env.PORT || 5001;
+    app.listen(PORT, () => {
+      console.log(`✅ Server is running on port ${PORT}`);
+    });
   } catch (error) {
-    console.error("❌ Database connection failed:", error);
+    console.error("❌ Failed to connect to database:", error);
+    process.exit(1); // Exit process with failure code
   }
-});
+};
+
+// Start the server
+startServer();

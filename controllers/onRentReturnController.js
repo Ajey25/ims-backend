@@ -754,7 +754,7 @@ exports.updateOnRentReturn = async (req, res) => {
     onRentReturn.driverName = vehicleDetails?.driverName;
     onRentReturn.mobileNo = vehicleDetails?.mobileNo;
     onRentReturn.totalAmount = totalAmount;
-    onRentReturn.updatedBy = updatedBy;
+    onRentReturn.createdBy = updatedBy;
 
     await onRentReturn.save({ transaction });
     await transaction.commit();

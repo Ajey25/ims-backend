@@ -19,11 +19,12 @@ const sendOnRentEmail = async (
   mode = "create"
 ) => {
   try {
+    // Create the transporter to send email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "ajay.silentkiller1630@gmail.com",
-        pass: "ffqcugaipniwgypd", // Use App Password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Use App Password
       },
     });
 
@@ -31,6 +32,18 @@ const sendOnRentEmail = async (
       `${Number(amount).toLocaleString("en-IN", {
         minimumFractionDigits: 0,
       })}`;
+
+    // Format the date in dd/mm/yyyy format
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    };
+
+    const formattedOnRentDate = formatDate(onRentDetails.onRentDate);
 
     const doc = new PDFDocument({ margin: 40 });
     const buffers = [];
@@ -45,21 +58,7 @@ const sendOnRentEmail = async (
           ? "OnRent Booking Updated"
           : "OnRent Booking Confirmation";
 
-      const message = `Hi ${customerName},
-
-Please find attached the OnRent Booking Invoice for your recent order.
-
-OnRent No: ${onRentDetails.onRentNo}  
-Date: ${onRentDetails.onRentDate}  
-
-We truly appreciate your business and look forward to serving you again!
-
-Thank you for choosing LogicLoom IT Solutions.
-
-Best regards,  
-Team LogicLoom  
-📞 +91-9876543210  
-📧 support@logicloom.com`;
+      const message = `Hi ${customerName},\n\nPlease find attached the OnRent Booking Invoice for your recent order.\n\nOnRent No: ${onRentDetails.onRentNo}\nDate: ${formattedOnRentDate}\n\nWe truly appreciate your business and look forward to serving you again!\n\nThank you for choosing LogicLoom IT Solutions.\n\nBest regards,\nTeam LogicLoom\n📞 +91-9876543210\n📧 support@logicloom.com`;
 
       const mailOptions = {
         from: "ajay.silentkiller1630@gmail.com",
@@ -75,12 +74,12 @@ Team LogicLoom
         ],
       };
 
+      // Send the email with the PDF attachment
       await transporter.sendMail(mailOptions);
       console.log("✅ PDF email sent successfully to:", customerEmail);
     });
 
     // PDF Content
-
     doc
       .image("assests/LogicLoom-2-04.png", 40, 30, { width: 100 }) // Left corner
       .font("Helvetica-Bold")
@@ -108,7 +107,7 @@ Team LogicLoom
 
     const infoLeft = [
       `OnRent No    : ${onRentDetails.onRentNo}`,
-      `OnRent Date : ${onRentDetails.onRentDate}`,
+      `OnRent Date : ${formattedOnRentDate}`,
     ];
 
     const infoRight = [
@@ -226,6 +225,7 @@ Team LogicLoom
     console.error("❌ Error sending email with PDF:", error);
   }
 };
+
 const generateOnRentNo = async () => {
   try {
     const lastOnRent = await OnRent.findOne({

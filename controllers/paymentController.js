@@ -19,8 +19,8 @@ const sendPaymentEmail = async (
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "ajay.silentkiller1630@gmail.com",
-        pass: "ffqcugaipniwgypd", // Use App Password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Use App Password
       },
     });
     const formatCurrency = (amount) =>
@@ -53,19 +53,21 @@ const sendPaymentEmail = async (
 
       const message = `Hi ${customerName},
 
-Please find attached the Payment Invoice for your recent payment.
-
-Payment ID: ${paymentDetails.paymentId}  
-Date: ${paymentDetails.paymentDate}  
-
-We truly appreciate your business and look forward to serving you again!
-
-Thank you for choosing LogicLoom IT Solutions.
-
-Best regards,  
-Team LogicLoom  
-📞 +91-9876543210  
-📧 support@logicloom.com`;
+        Please find attached the Payment Invoice for your recent payment.
+        
+        Payment ID     : ${paymentDetails.id || " "}
+        Payment Date   : ${formattedDate || " "}
+        Payment Type   : ${paymentDetails.paymentType || " "}
+        Paid Amount    : ${formatCurrency(paymentDetails.paidAmount) || " "}
+        
+        We truly appreciate your business and look forward to serving you again!
+        
+        Thank you for choosing LogicLoom IT Solutions.
+        
+        Best regards,  
+        Team LogicLoom  
+        📞 +91-9876543210  
+        📧 support@logicloom.com`;
 
       const mailOptions = {
         from: "ajay.silentkiller1630@gmail.com",
@@ -360,7 +362,7 @@ exports.addPayment = async (req, res) => {
       });
     }
 
-    const validPaymentTypes = ["Cash", "Cheque", "UPI"];
+    const validPaymentTypes = ["Cash", "Cheque", "UPI", "Credits"];
     if (!validPaymentTypes.includes(paymentType)) {
       return res.status(400).json({
         message: `Invalid payment type. Allowed values are: ${validPaymentTypes.join(
@@ -413,13 +415,26 @@ exports.addPayment = async (req, res) => {
       }
     );
 
-    // Pass customerEmail to sendPaymentEmail
-    await sendPaymentEmail(
-      customerEmail,
-      customerName,
-      newPayment, // You should pass newPayment here for payment details
-      "create"
-    );
+    // Deduct from advanceCreditAmount if using Credits
+    if (paymentType === "Credits") {
+      const customer = await CustomerMaster.findByPk(customerId);
+      if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+      }
+
+      if (customer.advanceCreditAmount < paidAmount) {
+        return res.status(400).json({
+          message: `Insufficient advance credit. Available: ₹${customer.advanceCreditAmount}`,
+        });
+      }
+
+      customer.advanceCreditAmount -= paidAmount;
+      await customer.save();
+    }
+
+    // Send the email after successful deduction
+    await sendPaymentEmail(customerEmail, customerName, newPayment, "create");
+
     res.status(201).json({
       message: "Payment recorded successfully",
       payment: newPayment,

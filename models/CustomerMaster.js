@@ -16,6 +16,7 @@ const CustomerMaster = sequelize.define(
     pan: { type: DataTypes.STRING },
     address: { type: DataTypes.TEXT, allowNull: false },
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
+    advanceCreditAmount: { type: DataTypes.FLOAT, defaultValue: 0 },
     createdBy: { type: DataTypes.STRING, allowNull: false },
   },
   {

@@ -19,7 +19,7 @@ const Payment = sequelize.define(
       allowNull: false,
     },
     paymentType: {
-      type: DataTypes.ENUM("Cash", "Cheque", "UPI"),
+      type: DataTypes.ENUM("Cash", "Cheque", "UPI", "Credits"),
       allowNull: false,
     },
     createdBy: {

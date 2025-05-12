@@ -15,8 +15,8 @@ const sendEmail = async (toEmail, onRentReturn, items, mode = "create") => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "ajay.silentkiller1630@gmail.com",
-        pass: "ffqcugaipniwgypd", // App password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // App password
       },
     });
 
@@ -24,6 +24,15 @@ const sendEmail = async (toEmail, onRentReturn, items, mode = "create") => {
       `${Number(amount).toLocaleString("en-IN", {
         minimumFractionDigits: 0,
       })}`;
+
+    // Utility function to format date as dd/mm/yyyy
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
 
     const doc = new PDFDocument({ margin: 40 });
     const buffers = [];
@@ -44,7 +53,7 @@ const sendEmail = async (toEmail, onRentReturn, items, mode = "create") => {
 Please find attached the OnRent Return Invoice.
 
 OnRent Return No: ${onRentReturn.onRentReturnNo}
-Date: ${onRentReturn.onRentReturnDate}
+Date: ${formatDate(onRentReturn.onRentReturnDate)}  
 
 Thank you for choosing LogicLoom IT Solutions!
 
@@ -98,7 +107,7 @@ Team LogicLoom
     doc.fontSize(12).font("Helvetica-Bold");
     const infoLeft = [
       `Return No     : ${onRentReturn.onRentReturnNo}`,
-      `Return Date  : ${onRentReturn.onRentReturnDate}`,
+      `Return Date  : ${formatDate(onRentReturn.onRentReturnDate)}`, // Date formatted here
     ];
 
     const infoRight = [

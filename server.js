@@ -14,6 +14,7 @@ const onrentRoute = require("./routes/onrentRoute");
 const onrentReturnRoute = require("./routes/onrentreturnRoute");
 const paymentRoutes = require("./routes/paymentRoute");
 const reportRoutes = require("./routes/reportRoute");
+const customerCredit = require("./routes/customerCreditRoute");
 require("./models/association");
 
 dotenv.config();
@@ -21,11 +22,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://ims-frontend-git-master-ajay-prajapatis-projects-99e0518f.vercel.app",
-    "https://ims-frontend-wheat.vercel.app",
-  ],
+  origin: ["http://localhost:5173", "https://ims-frontend-wheat.vercel.app"],
   methods: "GET, POST, PUT, DELETE",
   allowedHeaders: "Content-Type, Authorization",
   credentials: true,
@@ -48,6 +45,7 @@ app.use("/api/onrent", onrentRoute);
 app.use("/api/onrentreturn", onrentReturnRoute);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/report", reportRoutes);
+app.use("/api/customerCredit", customerCredit);
 
 // Function to start the server after DB connection
 const startServer = async () => {

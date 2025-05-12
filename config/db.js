@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: false, // This is the default for most MySQL clients
       },
     },
     logging: false,

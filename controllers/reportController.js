@@ -77,8 +77,8 @@ exports.sendCustomerReportEmail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "ajay.silentkiller1630@gmail.com",
-        pass: "ffqcugaipniwgypd",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 

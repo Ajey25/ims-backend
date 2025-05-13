@@ -122,3 +122,19 @@ exports.deleteCustomer = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.checkEmailExists = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const customer = await CustomerMaster.findOne({ where: { email } });
+
+    res.json({ exists: !!customer }); // true if email found, false otherwise
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

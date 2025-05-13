@@ -10,9 +10,9 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT, // Railway's port is 56327 but fallback helps
     dialect: "mysql",
     dialectOptions: {
-      ssl: {
-        rejectUnauthorized: false, // This is the default for most MySQL clients
-      },
+      // ssl: {
+      //   rejectUnauthorized: false, // This is the default for most MySQL clients
+      // },
     },
     logging: false,
   }

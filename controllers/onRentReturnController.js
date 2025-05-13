@@ -111,10 +111,10 @@ Team LogicLoom
     ];
 
     const infoRight = [
-      `Vehicle Name : ${onRentReturn.vehicleName}`,
-      `Vehicle No      : ${onRentReturn.vehicleNo}`,
-      `Driver Name   : ${onRentReturn.driverName}`,
-      `Mobile No       : ${onRentReturn.mobileNo}`,
+      `Vehicle Name : ${onRentReturn.vehicleName || "N/A"}`,
+      `Vehicle No      : ${onRentReturn.vehicleNo || "N/A"}`,
+      `Driver Name   : ${onRentReturn.driverName || "N/A"}`,
+      `Mobile No       : ${onRentReturn.mobileNo || "N/A"}`,
     ];
 
     const tableStartY = doc.y;

@@ -111,10 +111,10 @@ const sendOnRentEmail = async (
     ];
 
     const infoRight = [
-      `Vehicle Name : ${onRentDetails.vehicleName}`,
-      `Vehicle No      : ${onRentDetails.vehicleNo}`,
-      `Driver Name   : ${onRentDetails.driverName}`,
-      `Mobile No       : ${onRentDetails.mobileNo}`,
+      `Vehicle Name : ${onRentDetails.vehicleName || "N/A"}`,
+      `Vehicle No      : ${onRentDetails.vehicleNo || "N/A"}`,
+      `Driver Name   : ${onRentDetails.driverName || "N/A"}`,
+      `Mobile No       : ${onRentDetails.mobileNo || "N/A"}`,
     ];
 
     const leftX = 40;

@@ -9,7 +9,7 @@ const CustomerMaster = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    customerName: { type: DataTypes.STRING, allowNull: false },
+    customerName: { type: DataTypes.STRING, allowNull: false, unique: true },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     mobile: { type: DataTypes.STRING, allowNull: false },
     gst: { type: DataTypes.STRING },

@@ -9,6 +9,7 @@ router.use((req, res, next) => {
 
 router.get("/", customerController.getCustomers);
 router.get("/check/email", customerController.checkEmailExists);
+router.get("/check/name", customerController.checkCustomerNameExists);
 
 router.get("/:id", customerController.getCustomerById);
 

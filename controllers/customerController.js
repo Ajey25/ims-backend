@@ -138,3 +138,20 @@ exports.checkEmailExists = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+exports.checkCustomerNameExists = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.status(400).json({ message: "Customer Name is required" });
+    }
+
+    const customer = await CustomerMaster.findOne({
+      where: { customerName: name },
+    });
+
+    res.json({ exists: !!customer }); // true if found, false otherwise
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
